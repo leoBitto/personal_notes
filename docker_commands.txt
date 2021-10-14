@@ -1,0 +1,34 @@
+build images:                                                   docker build -t <repo>/<name>:<tag> 'where the docker file is'
+list images:                                                    docker images
+list containers:                                                docker ps
+                                                                        options:
+                                                                            -a display all containers stopped and running
+                                                                        output:
+                                                                            [IP_ADDR]:{PORT_OUTSIDE_CONTAINER} -> {PORT_INSIDE_CONTAINER} / {PROTOCOL}
+                                                                
+remove images:                                                  docker rmi <name>
+Remove one or more containers:                                  docker rm [OPTIONS] CONTAINER [CONTAINER...]
+create a network to connect two containers:                     docker network create <nameofnetwork>
+run an image:                                                   docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+                                                                            options:
+                                                                                -v <nameofvolume>:<volume/path/
+                                                                                --network <nameofnetwork>
+                                                                                --network-alias <nameofthecontainer>  ***needed to refer to it when looking for its ip in the network***
+                                                                                -p <hostPort>:<containerPort>
+                                                                                -it make it interactive
+                                                                                -d run on background
+                                                                                --name <nameofcontainer>
+start one or more stopped containers:                           docker start [OPTIONS] CONTAINER [CONTAINER...]
+display a live stream of contaner(s) resource usage:            docker stats [OPTIONS] [CONTAINER...]
+stop one or more running containers:                            docker stop [OPTIONS] CONTAINER [CONTAINER...]
+Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE:          docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
+
+DOCKER BUILD COMMANDS [i need to build using DNS to internet for pip]:
+docker build -t leobitto/sito:latest . --network host
+dokcer build -t leobitto/sito_nginx:latest . --network host
+
+
+DOCKER RUN COMMANDS:
+docker run --network site -dp 80:8000 --name nginx leobitto/sito_fotografo_nginx:latest
+docker run --network site -d --name sito leobitto/sito_fotografo:latest 
+                                                                        gunicorn sito.wsgi:application --bind 0.0.0.0:8000
